@@ -4,8 +4,9 @@ $:.unshift(File.dirname(__FILE__))
 
 require 'net/http'
 require 'json'
+require 'data_mapper'
+require 'dm-migrations'
 
-require 'iex_trading/factory'
 require 'iex_trading/http'
 require 'iex_trading/iex_api'
 require 'iex_trading/log'
@@ -13,6 +14,12 @@ require 'iex_trading/option_parser'
 require 'iex_trading/model/model'
 require 'iex_trading/model/company'
 require 'iex_trading/model/statistic'
+require 'iex_trading/model/tag'
+require 'iex_trading/model/financial'
+
+DataMapper.setup(:default, "sqlite3://#{File.dirname(File.dirname(__FILE__))}/development.db")
+DataMapper.finalize
+DataMapper.auto_migrate!
 
 module IEX_Trading
 
@@ -27,29 +34,34 @@ module IEX_Trading
       )
       @parser.start
       @symbols = IEX_API.ref_data_symbols
-      @factory = Factory.new
     end
 
     ###################
     def company(symbol)
-      Log.print(
-          @factory.company(
-              IEX_API.stock_company(
-                  symbol
-              )
-          )
+      hash = IEX_API.stock_company(
+          symbol
       )
-    end
+      tags = hash.delete('tags')
+      company = Company.first_or_create(
+          hash
+      )
 
-    ###################
-    def statistics(symbol)
-      Log.print(
-          @factory.statistic(
-              IEX_API.stock_stats(
-                  symbol
-              )
-          )
+      tags.each { |tag|
+        company.tags.new(name: tag)
+      }
+
+      company.statistics.new(
+          IEX_API.stock_stats(
+            symbol
+        )
       )
+
+      IEX_API.stock_financials(symbol).each { |financial|
+        company.financials.new(financial)
+      }
+
+      company.save
+      puts company
     end
 
     ###################
@@ -60,8 +72,7 @@ module IEX_Trading
             case @parser.commands[1]
               when nil
                 company(@parser.options[:symbol])
-              when 'statistics'
-                statistics(@parser.options[:symbol])
+                company(@parser.options[:symbol])
             end
           else
             raise 'illegal command'

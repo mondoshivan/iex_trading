@@ -17,5 +17,10 @@ module IEX_Trading
       HTTP.get("stock/#{symbol}/stats")
     end
 
+    ###################
+    def self.stock_financials(symbol)
+      HTTP.get("stock/#{symbol}/financials")['financials']
+    end
+
   end
 end
