@@ -14,12 +14,12 @@
       :description: |
         get company information
       :commands:
-          status:
+          statistics:
             :banner: "Usage: ${ENTRY_POINT} ${COMMANDS} [OPTIONS]"
             :options:
-              - :short: -n NAME
-                :long: --name NAME
-                :description: status name
-                :key_name: name
+              - :short: -s SYMBOL
+                :long: --symbol SYMBOL
+                :description: company symbol
+                :key_name: symbol
             :description: |
-              get status information
+              get company statistics

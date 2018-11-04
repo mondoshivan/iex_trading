@@ -5,13 +5,14 @@ $:.unshift(File.dirname(__FILE__))
 require 'net/http'
 require 'json'
 
-require 'iex_trading/company'
 require 'iex_trading/factory'
 require 'iex_trading/http'
 require 'iex_trading/iex_api'
 require 'iex_trading/log'
 require 'iex_trading/option_parser'
-require 'iex_trading/statistic'
+require 'iex_trading/model/model'
+require 'iex_trading/model/company'
+require 'iex_trading/model/statistic'
 
 module IEX_Trading
 
@@ -41,11 +42,27 @@ module IEX_Trading
     end
 
     ###################
+    def statistics(symbol)
+      Log.print(
+          @factory.statistic(
+              IEX_API.stock_stats(
+                  symbol
+              )
+          )
+      )
+    end
+
+    ###################
     def run
       begin
         case @parser.commands[0]
           when 'company'
-            company(@parser.options[:symbol])
+            case @parser.commands[1]
+              when nil
+                company(@parser.options[:symbol])
+              when 'statistics'
+                statistics(@parser.options[:symbol])
+            end
           else
             raise 'illegal command'
         end
