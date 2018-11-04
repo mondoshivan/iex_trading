@@ -1,0 +1,25 @@
+:parse:
+  :banner: "Usage: ${ENTRY_POINT} COMMAND [OPTIONS]"
+  :description: |
+    Available commands:
+    company    company information
+  :commands:
+    company:
+      :banner: "Usage: ${ENTRY_POINT} ${COMMANDS} [OPTIONS]"
+      :options:
+        - :short: -s SYMBOL
+          :long: --symbol SYMBOL
+          :description: company symbol
+          :key_name: symbol
+      :description: |
+        get company information
+      :commands:
+          status:
+            :banner: "Usage: ${ENTRY_POINT} ${COMMANDS} [OPTIONS]"
+            :options:
+              - :short: -n NAME
+                :long: --name NAME
+                :description: status name
+                :key_name: name
+            :description: |
+              get status information
