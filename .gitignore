@@ -1,2 +1,6 @@
 .idea
 iex_trading.iml
+.ruby-version
+.bundle
+development.db
+Gemfile.lock
