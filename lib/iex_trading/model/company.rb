@@ -4,7 +4,6 @@ module IEX_Trading
 
     include DataMapper::Resource
 
-    property :symbol,      String, :key => true
     property :companyName, String
     property :exchange,    String
     property :industry,    String
@@ -13,6 +12,8 @@ module IEX_Trading
     property :CEO,         String
     property :issueType,   String
     property :sector,      String
+
+    belongs_to :symbol, key: true
 
     has n, :tags
     has n, :statistics

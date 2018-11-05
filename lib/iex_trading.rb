@@ -11,11 +11,13 @@ require 'iex_trading/http'
 require 'iex_trading/iex_api'
 require 'iex_trading/log'
 require 'iex_trading/option_parser'
+require 'iex_trading/data_collector'
 require 'iex_trading/model/model'
 require 'iex_trading/model/company'
 require 'iex_trading/model/statistic'
 require 'iex_trading/model/tag'
 require 'iex_trading/model/financial'
+require 'iex_trading/model/symbol'
 
 DataMapper.setup(:default, "sqlite3://#{File.dirname(File.dirname(__FILE__))}/development.db")
 DataMapper.finalize
@@ -33,35 +35,11 @@ module IEX_Trading
           File.join(File.dirname(__FILE__), 'iex_trading', 'option_parser', 'config.yaml')
       )
       @parser.start
-      @symbols = IEX_API.ref_data_symbols
     end
 
     ###################
-    def company(symbol)
-      hash = IEX_API.stock_company(
-          symbol
-      )
-      tags = hash.delete('tags')
-      company = Company.first_or_create(
-          hash
-      )
-
-      tags.each { |tag|
-        company.tags.new(name: tag)
-      }
-
-      company.statistics.new(
-          IEX_API.stock_stats(
-            symbol
-        )
-      )
-
-      IEX_API.stock_financials(symbol).each { |financial|
-        company.financials.new(financial)
-      }
-
-      company.save
-      puts company
+    def collect
+      DataCollector.new.run
     end
 
     ###################
@@ -85,4 +63,4 @@ module IEX_Trading
   end
 end
 
-IEX_Trading::Main.new.run
+IEX_Trading::Main.new.collect
