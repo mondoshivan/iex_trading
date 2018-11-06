@@ -16,6 +16,7 @@ require 'iex_trading/iex_api'
 require 'iex_trading/log'
 require 'iex_trading/option_parser'
 require 'iex_trading/data_collector'
+require 'iex_trading/search'
 require 'iex_trading/model/model'
 require 'iex_trading/model/company'
 require 'iex_trading/model/statistic'
@@ -60,6 +61,13 @@ module IEX_Trading
     end
 
     ###################
+    def search(options)
+      s = Search.new(options)
+      s = s.start
+      Log.print s.pretty_results
+    end
+
+    ###################
     def statistic(symbol)
       hash = IEX_Trading::IEX_API.stock_stats(symbol)
       Log.print JSON.pretty_generate(hash)
@@ -67,15 +75,21 @@ module IEX_Trading
 
     ###################
     def run
+      symbol = @parser.options[:symbol]
+
       begin
         case @parser.commands[0]
           when 'company'
             case @parser.commands[1]
               when nil
-                company(@parser.options[:symbol])
+                company(symbol)
               when 'statistic'
-                statistic(@parser.options[:symbol])
+                statistic(symbol)
+              else
+                raise 'illegal command'
             end
+          when 'search'
+            search(@parser.options)
           when 'update'
             update
           else

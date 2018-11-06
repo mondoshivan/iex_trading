@@ -26,6 +26,28 @@
                 :required: true
             :description: |
               get company statistic
+    search:
+      :banner: "Usage: ${ENTRY_POINT} ${COMMANDS} [OPTIONS]"
+      :show_options: true
+      :options:
+        - :short: -s SYMBOL
+          :long: --symbol SYMBOL
+          :description: search for symbols
+          :key_name: symbol
+        - :short: -c COMPANY
+          :long: --company COMPANY
+          :description: search for a company name
+          :key_name: companyName
+        - :short: -e EXCHANGE
+          :long: --exchange EXCHANGE
+          :description: search for companies from a certain exchange
+          :key_name: exchange
+        - :short: -i INDUSTRY
+          :long: --industry INDUSTRY
+          :description: search for companies from a certain industry
+          :key_name: industry
+      :description: |
+        search for companies
     update:
       :banner: "Usage: ${ENTRY_POINT} ${COMMANDS} [OPTIONS]"
       :options:

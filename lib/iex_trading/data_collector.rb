@@ -63,6 +63,7 @@ module IEX_Trading
 
     ###################
     def run
+      Log.debug('Starting database update')
       IEX_API.ref_data_symbols.each_with_index {|symbol_hash, i|
         s = symbol(symbol_hash)
         s = company(s)
@@ -72,7 +73,6 @@ module IEX_Trading
 
         i += 1
         Log.debug("#{i}. Symbol: #{s.symbol}")
-        break if i == 10
       }
     end
   end
