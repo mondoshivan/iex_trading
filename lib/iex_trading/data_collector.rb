@@ -72,7 +72,7 @@ module IEX_Trading
 
         i += 1
         Log.debug("#{i}. Symbol: #{s.symbol}")
-        break if i == 100
+        break if i == 10
       }
     end
   end

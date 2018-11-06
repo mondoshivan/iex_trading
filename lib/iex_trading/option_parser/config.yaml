@@ -3,6 +3,7 @@
   :description: |
     Available commands:
     company    company information
+    update     starts an update cycle
   :commands:
     company:
       :banner: "Usage: ${ENTRY_POINT} ${COMMANDS} [OPTIONS]"
@@ -11,15 +12,26 @@
           :long: --symbol SYMBOL
           :description: company symbol
           :key_name: symbol
+          :required: true
       :description: |
         get company information
       :commands:
-          statistics:
+          statistic:
             :banner: "Usage: ${ENTRY_POINT} ${COMMANDS} [OPTIONS]"
             :options:
               - :short: -s SYMBOL
                 :long: --symbol SYMBOL
                 :description: company symbol
                 :key_name: symbol
+                :required: true
             :description: |
-              get company statistics
+              get company statistic
+    update:
+      :banner: "Usage: ${ENTRY_POINT} ${COMMANDS} [OPTIONS]"
+      :options:
+        - :short: -d
+          :long: --detach
+          :description: starts the update in the background
+          :key_name: detach
+      :description: |
+        starts an update cycle

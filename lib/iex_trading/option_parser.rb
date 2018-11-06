@@ -39,6 +39,14 @@ module IEX_Trading
     end
 
     ##################
+    def has_required_option(options)
+      options.each {|option|
+        return true if option[:required]
+      }
+      return false
+    end
+
+    ##################
     def parse_options(hash)
       parser = OptionParser.new { |opts|
         opts.banner = placeholders(hash[:banner])
@@ -55,7 +63,7 @@ module IEX_Trading
       command = ARGV.shift
       @commands << command if command
       show_help(parser) if @commands.empty?
-      show_help(parser) if command.nil? && @options.empty?
+      show_help(parser) if command.nil? && @options.empty? && has_required_option(hash[:options])
       parse_options(hash[:commands][command]) if command
     end
 
