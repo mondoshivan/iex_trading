@@ -1,61 +1,60 @@
 
 module IEX_Trading
-  class Statistic < Model
+  class Statistic
 
     include DataMapper::Resource
 
     belongs_to :company
 
-    property :symbol, 	String, key: true
-    property :companyName, String
+    property :id, Serial
     property :marketcap, Float
-    property :beta, Decimal
-    property :week52high, 	Decimal
-    property :week52low, 	Decimal
-    property :week52change, 	Decimal
+    property :beta, Float
+    property :week52high, 	Float
+    property :week52low, 	Float
+    property :week52change, 	Float
     property :shortInterest, 	Float
-    property :shortDate, 	String
-    property :dividendRate, 	Decimal
-    property :dividendYield, 	Decimal
-    property :exDividendDate, 	String
-    property :latestEPS, 	Decimal
-    property :latestEPSDate, 	String
+    property :shortDate, 	Date
+    property :dividendRate, 	Float
+    property :dividendYield, 	Float
+    property :exDividendDate, 	DateTime
+    property :latestEPS, 	Float
+    property :latestEPSDate, 	Date
     property :sharesOutstanding, 	Float
     property :float, 	Float
-    property :returnOnEquity, 	Decimal
-    property :consensusEPS, 	Decimal
+    property :returnOnEquity, 	Float
+    property :consensusEPS, 	Float
     property :numberOfEstimates, 	Integer
     property :EBITDA, Float
     property :revenue, Float
     property :grossProfit, Float
     property :cash, Float
     property :debt, Float
-    property :ttmEPS, Decimal
-    property :revenuePerShare, Decimal
-    property :revenuePerEmployee, Decimal
-    property :peRatioHigh, Decimal
-    property :peRatioLow, Decimal
-    property :EPSSurpriseDollar, Decimal
-    property :EPSSurprisePercent, 	Decimal
-    property :returnOnAssets, Decimal
-    property :returnOnCapital, 	Decimal # check type
-    property :profitMargin, Decimal
-    property :priceToSales, Decimal
-    property :priceToBook, Decimal
-    property :day200MovingAvg, Decimal
-    property :day50MovingAvg, Decimal
-    property :institutionPercent, Decimal # check type
-    property :insiderPercent, Decimal # check type
-    property :shortRatio, Decimal
-    property :year5ChangePercent, Decimal
-    property :year2ChangePercent, Decimal
-    property :year1ChangePercent, Decimal
-    property :ytdChangePercent, Decimal
-    property :month6ChangePercent, Decimal
-    property :month3ChangePercent, Decimal
-    property :month1ChangePercent, Decimal
-    property :day5ChangePercent, Decimal
-    property :day30ChangePercent, Decimal
+    property :ttmEPS, Float
+    property :revenuePerShare, Float
+    property :revenuePerEmployee, Float
+    property :peRatioHigh, Float
+    property :peRatioLow, Float
+    property :EPSSurpriseDollar, Float
+    property :EPSSurprisePercent, 	Float
+    property :returnOnAssets, Float
+    property :returnOnCapital, 	Float # check type
+    property :profitMargin, Float
+    property :priceToSales, Float
+    property :priceToBook, Float
+    property :day200MovingAvg, Float
+    property :day50MovingAvg, Float
+    property :institutionPercent, Float # check type
+    property :insiderPercent, Float # check type
+    property :shortRatio, Float
+    property :year5ChangePercent, Float
+    property :year2ChangePercent, Float
+    property :year1ChangePercent, Float
+    property :ytdChangePercent, Float
+    property :month6ChangePercent, Float
+    property :month3ChangePercent, Float
+    property :month1ChangePercent, Float
+    property :day5ChangePercent, Float
+    property :day30ChangePercent, Float
 
   end
 end

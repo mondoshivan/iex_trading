@@ -5,6 +5,7 @@ module IEX_Trading
 
     belongs_to :company
 
-    property :name,       String, key: true
+    property :id, Serial
+    property :name, String
   end
 end

@@ -1,19 +1,20 @@
 
 module IEX_Trading
-  class Company < Model
+  class Company
 
     include DataMapper::Resource
 
-    property :companyName, String
-    property :exchange,    String
-    property :industry,    String
-    property :website,     String
-    property :description, String
-    property :CEO,         String
-    property :issueType,   String
-    property :sector,      String
+    property :id,           Serial
+    property :companyName,  String
+    property :exchange,     String
+    property :industry,     String
+    property :website,      String
+    property :description,  Text
+    property :CEO,          String
+    property :issueType,    String
+    property :sector,       String
 
-    belongs_to :symbol, key: true
+    belongs_to :symbolic
 
     has n, :tags
     has n, :statistics

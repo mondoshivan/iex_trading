@@ -7,6 +7,8 @@ require 'json'
 require 'data_mapper'
 require 'dm-migrations'
 
+DataMapper.setup(:default, "sqlite3://#{File.dirname(File.dirname(__FILE__))}/development.db")
+
 require 'iex_trading/http'
 require 'iex_trading/iex_api'
 require 'iex_trading/log'
@@ -19,9 +21,8 @@ require 'iex_trading/model/tag'
 require 'iex_trading/model/financial'
 require 'iex_trading/model/symbol'
 
-DataMapper.setup(:default, "sqlite3://#{File.dirname(File.dirname(__FILE__))}/development.db")
 DataMapper.finalize
-DataMapper.auto_migrate!
+# DataMapper.auto_migrate!
 
 module IEX_Trading
 

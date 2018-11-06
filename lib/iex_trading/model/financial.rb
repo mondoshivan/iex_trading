@@ -7,7 +7,7 @@ module IEX_Trading
     belongs_to :company
 
     property :id, Serial
-    property :reportDate, String
+    property :reportDate, Date
     property :grossProfit, Float
     property :costOfRevenue, Float
     property :operatingRevenue, Float

@@ -1,12 +1,13 @@
 
 
 module IEX_Trading
-  class Symbol
+  class Symbolic
     include DataMapper::Resource
 
-    property :symbol, String, key: true
+    property :id, Serial
+    property :symbol, String
     property :name, String
-    property :date, String
+    property :date, Date
     property :isEnabled, Boolean
     property :type, String
     property :iexId, Integer
