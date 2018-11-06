@@ -9,9 +9,10 @@ module IEX_Trading
 
     ###################
     def self.stock_company(symbol)
-      companies = HTTP.get("stock/#{symbol}/company")
-      companies.delete('symbol')
-      companies
+      company = HTTP.get("stock/#{symbol}/company")
+      company.delete('symbol')
+      tags = company.delete('tags')
+      {company: company, tags: tags}
     end
 
     ###################

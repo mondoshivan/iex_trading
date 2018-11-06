@@ -14,10 +14,10 @@ module IEX_Trading
     property :issueType,    String
     property :sector,       String
 
-    belongs_to :symbolic
+    belongs_to :symbol
 
     has n, :tags
-    has n, :statistics
+    has 1, :statistic
     has n, :financials
   end
 end

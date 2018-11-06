@@ -22,7 +22,7 @@ require 'iex_trading/model/financial'
 require 'iex_trading/model/symbol'
 
 DataMapper.finalize
-# DataMapper.auto_migrate!
+DataMapper.auto_migrate!
 
 module IEX_Trading
 
