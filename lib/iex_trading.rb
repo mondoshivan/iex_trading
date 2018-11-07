@@ -23,6 +23,8 @@ require 'iex_trading/model/statistic'
 require 'iex_trading/model/tag'
 require 'iex_trading/model/financial'
 require 'iex_trading/model/symbol'
+require 'iex_trading/views/table_view'
+require 'iex_trading/views/table_view_data'
 
 DataMapper.finalize
 # DataMapper.auto_migrate!
@@ -64,7 +66,21 @@ module IEX_Trading
     def search(options)
       s = Search.new(options)
       s = s.start
-      Log.print s.pretty_results
+
+      t_data = TableViewData.new
+      t_data.headers('Symbol', 'Exchange', 'Industry', 'Company Name')
+      s.results.each { |result|
+        company = result.company
+        t_data.record(
+            result.symbol,
+            company.exchange,
+            company.industry,
+            result.name
+        )
+      }
+
+      t_view = TableView.new(t_data)
+      t_view.print
     end
 
     ###################

@@ -38,6 +38,10 @@
           :long: --company COMPANY
           :description: search for a company name
           :key_name: companyName
+        - :short: -d
+          :long: --descending
+          :description: 'switches sorting to descending (default: ascending)'
+          :key_name: descending
         - :short: -e EXCHANGE
           :long: --exchange EXCHANGE
           :description: search for companies from a certain exchange
@@ -46,6 +50,10 @@
           :long: --industry INDUSTRY
           :description: search for companies from a certain industry
           :key_name: industry
+#        - :short: -o ATTRIBUTE
+#          :long: --order_by ATTRIBUTE
+#          :description: sorts the records in the result set according to the given attribute
+#          :key_name: order_by
       :description: |
         search for companies
     update:
