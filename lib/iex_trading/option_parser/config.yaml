@@ -4,6 +4,11 @@
     Available commands:
     company    company information
     update     starts an update cycle
+  :options:
+    - :short: -l LEVEL
+      :long: --log_level LEVEL
+      :description: e.g. debug, info, warn, error
+      :key_name: log_level
   :commands:
     company:
       :banner: "Usage: ${ENTRY_POINT} ${COMMANDS} [OPTIONS]"
@@ -63,5 +68,9 @@
           :long: --detach
           :description: starts the update in the background
           :key_name: detach
+        - :short: -f LOG_FILE
+          :long: --log_file LOG_FILE
+          :description: specify the file path for a log file
+          :key_name: log_file
       :description: |
         starts an update cycle

@@ -8,9 +8,6 @@ require 'json'
 require 'data_mapper'
 require 'dm-migrations'
 
-project_root = File.expand_path('../../', __FILE__)
-DataMapper.setup(:default, "sqlite3://#{project_root}/development.db")
-
 require 'iex_trading/http'
 require 'iex_trading/iex_api'
 require 'iex_trading/log'
@@ -26,9 +23,6 @@ require 'iex_trading/model/symbol'
 require 'iex_trading/views/table_view'
 require 'iex_trading/views/table_view_data'
 
-DataMapper.finalize
-# DataMapper.auto_migrate!
-
 module IEX_Trading
 
   ENTRY_POINT = File.basename(__FILE__)
@@ -42,6 +36,30 @@ module IEX_Trading
           File.join(File.dirname(__FILE__), 'iex_trading', 'option_parser', 'config.yaml')
       )
       @parser.start
+      logging
+      database
+    end
+
+    ###################
+    def logging
+      file_name = File.basename(__FILE__, '.rb')
+      log_file = "/usr/local/var/#{file_name}/#{file_name}.log"
+      Log.file = @parser.options[:log_file] ? @parser.options[:log_file] : log_file
+      Log.level = @parser.options[:log_level] || 'warn'
+    end
+
+    ###################
+    def database
+      project_root = File.expand_path('../../', __FILE__)
+      DataMapper.setup(:default, "sqlite3://#{project_root}/development.db")
+      DataMapper.finalize
+      if ENV['IEX_TRADING_MODE'].upcase == 'DEVELOPMENT'
+        Log.info('Running in development mode')
+        DataMapper.auto_migrate!
+      else
+        Log.info('Running in production mode')
+        DataMapper.auto_upgrade!
+      end
     end
 
     ###################
