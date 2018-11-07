@@ -65,14 +65,15 @@ module IEX_Trading
     def run
       Log.debug('Starting database update')
       IEX_API.ref_data_symbols.each_with_index {|symbol_hash, i|
-        s = symbol(symbol_hash)
-        s = company(s)
-        s = statistics(s)
-        s = financials(s)
-        s.save
-
-        i += 1
-        Log.debug("#{i}. Symbol: #{s.symbol}")
+        begin
+          s = symbol(symbol_hash)
+          s = company(s)
+          s = statistics(s)
+          s = financials(s)
+          s.save
+        rescue => e
+          Log.error("#{e.class}: #{e.message}\n#{e.backtrace.join("\n")}")
+        end
       }
     end
   end
