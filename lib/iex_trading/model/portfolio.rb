@@ -7,5 +7,7 @@ module IEX_Trading
     property :id, Serial
     property :name, String
 
+    has n, :portfolioItems
+
   end
 end

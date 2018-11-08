@@ -92,4 +92,43 @@
               :required: true
           :description: |
             creates a new portfolio
+        item:
+          :banner: "Usage: ${ENTRY_POINT} ${COMMANDS} [COMMAND] [OPTIONS]"
+          :show_options: true
+          :description: |
+            Available sub commands:
+            new    create a new portfolio item
+          :commands:
+            new:
+              :banner: "Usage: ${ENTRY_POINT} ${COMMANDS} [OPTIONS]"
+              :options:
+                - :short: -a AMOUNT
+                  :long: --amount AMOUNT
+                  :description: amount of shares
+                  :key_name: amount
+                  :required: true
+                - :short: -p PORTFOLIO
+                  :long: --portfolio PORTFOLIO
+                  :description: portfolio to be added
+                  :key_name: portfolio
+                  :required: true
+                - :short: -s SYMBOL
+                  :long: --symbol SYMBOL
+                  :description: symbol of the share
+                  :key_name: symbol
+                  :required: true
+              :description: |
+                creates a new portfolio item
+            list:
+              :banner: "Usage: ${ENTRY_POINT} ${COMMANDS} [OPTIONS]"
+              :options:
+                - :short: -p PORTFOLIO
+                  :long: --portfolio PORTFOLIO
+                  :description: portfolio to be listed
+                  :key_name: portfolio
+                  :required: true
+              :description: |
+                lists all items of a portfolio
+
+
 

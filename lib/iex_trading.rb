@@ -77,7 +77,8 @@ module IEX_Trading
         args = @argv.delete_if{|e| e == '-d' || e == '--detach'}.join(' ')
         command = "'#{__FILE__}' #{args} > /dev/null 2>&1"
         pid = spawn(command)
-        Log.print(pid + "\n")
+        Log.print(pid)
+        Log.print("\n")
       else
         DataCollector.new.run
       end
@@ -135,6 +136,40 @@ module IEX_Trading
     end
 
     ###################
+    def portfolio_item_new
+      p = Portfolio.first(name: @parser.options[:portfolio])
+      raise "portfolio does not exist: #{@parser.options[:portfolio]}" unless p
+
+      s = Symbol.first(name: @parser.options[:symbol])
+      raise "symbol does not exist: #{@parser.options[:symbol]}" unless s
+
+      p.portfolioItems << PortfolioItem.new(
+          symbol: s,
+          amount: @parser.options[:amount]
+      )
+      p.save
+    end
+
+    ###################
+    def portfolio_item_list
+      p = Portfolio.first(name: @parser.options[:portfolio])
+      raise "portfolio does not exist: #{@parser.options[:portfolio]}" unless p
+
+      t_data = TableViewData.new
+      t_data.headers('Symbol', 'Name', 'Amount')
+      p.portfolioItems.each { |result|
+        t_data.record(
+            result.symbol,
+            result.symbol.name,
+            result.amount
+        )
+      }
+
+      t_view = TableView.new(t_data)
+      t_view.print
+    end
+
+    ###################
     def run
       symbol = @parser.options[:symbol]
 
@@ -159,6 +194,13 @@ module IEX_Trading
                 portfolio_list
               when 'new'
                 portfolio_new
+              when 'item'
+                case @parser.commands[2]
+                  when 'new'
+                    portfolio_item_new
+                  when 'list'
+                    portfolio_item_list
+                end
               else
                 raise 'illegal command'
             end

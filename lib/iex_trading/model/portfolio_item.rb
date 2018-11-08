@@ -7,6 +7,6 @@ module IEX_Trading
     property :amount, Float
 
     has 1, :symbol
-
+    belongs_to :portfolio
   end
 end
