@@ -49,15 +49,15 @@ module IEX_Trading
       s = create_row(columns, 0)
       index_padding = ' ' * (index_size - 'Index'.size)
       header = 'Index ' + index_padding + s
-      Log.print '-' * header.size
-      Log.print header
-      Log.print '-' * header.size
+      Log.print '-' * header.size + "\n"
+      Log.print header + "\n"
+      Log.print '-' * header.size + "\n"
 
       records_size.times.each {|record_index|
         record_index += 1
         s = create_row(columns, record_index)
         index_padding = ' ' * (index_size - record_index.to_s.size)
-        Log.print "#{record_index}.#{index_padding}" + s
+        Log.print "#{record_index}.#{index_padding}" + s + "\n"
       }
     end
   end

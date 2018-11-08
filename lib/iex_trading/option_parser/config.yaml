@@ -74,3 +74,22 @@
           :key_name: log_file
       :description: |
         starts an update cycle
+    portfolio:
+      :banner: "Usage: ${ENTRY_POINT} ${COMMANDS} [OPTIONS]"
+      :show_options: true
+      :description: |
+        Available sub commands:
+        list    list all available portfolios
+      :commands:
+        list:
+        new:
+          :banner: "Usage: ${ENTRY_POINT} ${COMMANDS} [OPTIONS]"
+          :options:
+            - :short: -n NAME
+              :long: --name NAME
+              :description: name of the portfolio
+              :key_name: name
+              :required: true
+          :description: |
+            creates a new portfolio
+

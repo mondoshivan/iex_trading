@@ -20,6 +20,8 @@ require 'iex_trading/model/statistic'
 require 'iex_trading/model/tag'
 require 'iex_trading/model/financial'
 require 'iex_trading/model/symbol'
+require 'iex_trading/model/portfolio'
+require 'iex_trading/model/portfolio_item'
 require 'iex_trading/views/table_view'
 require 'iex_trading/views/table_view_data'
 
@@ -53,7 +55,8 @@ module IEX_Trading
       project_root = File.expand_path('../../', __FILE__)
       DataMapper.setup(:default, "sqlite3://#{project_root}/development.db")
       DataMapper.finalize
-      if ENV['IEX_TRADING_MODE'].upcase == 'DEVELOPMENT'
+      mode = ENV['IEX_TRADING_MODE']
+      if mode && mode.upcase == 'DEVELOPMENT'
         Log.info('Running in development mode')
         DataMapper.auto_migrate!
       else
@@ -74,7 +77,7 @@ module IEX_Trading
         args = @argv.delete_if{|e| e == '-d' || e == '--detach'}.join(' ')
         command = "'#{__FILE__}' #{args} > /dev/null 2>&1"
         pid = spawn(command)
-        Log.print(pid)
+        Log.print(pid + "\n")
       else
         DataCollector.new.run
       end
@@ -108,6 +111,30 @@ module IEX_Trading
     end
 
     ###################
+    def portfolio_list
+      portfolios = Portfolio.all
+
+      t_data = TableViewData.new
+      t_data.headers('Name')
+      portfolios.each { |result|
+        t_data.record(
+            result.name
+        )
+      }
+
+      t_view = TableView.new(t_data)
+      t_view.print
+    end
+
+    ###################
+    def portfolio_new
+      p = Portfolio.first(name: @parser.options[:name])
+      raise "portfolio exists: #{@parser.options[:name]}" if p
+      p = Portfolio.new(name: @parser.options[:name])
+      p.save
+    end
+
+    ###################
     def run
       symbol = @parser.options[:symbol]
 
@@ -126,6 +153,15 @@ module IEX_Trading
             search(@parser.options)
           when 'update'
             update
+          when 'portfolio'
+            case @parser.commands[1]
+              when 'list'
+                portfolio_list
+              when 'new'
+                portfolio_new
+              else
+                raise 'illegal command'
+            end
           else
             raise 'illegal command'
         end

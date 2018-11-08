@@ -35,12 +35,13 @@ module IEX_Trading
     ##################
     def show_help(parser)
       Log.print(parser)
+      Log.print("\n")
       exit 1
     end
 
     ##################
     def has_required_option(options)
-      options.each {|option|
+      (options || []).each {|option|
         return true if option[:required]
       }
       return false
@@ -49,6 +50,7 @@ module IEX_Trading
     ##################
     def parse_options(hash)
       parser = OptionParser.new { |opts|
+        return unless hash
         opts.banner = placeholders(hash[:banner])
         opts.separator ''
         opts.separator placeholders(hash[:description])
@@ -64,6 +66,7 @@ module IEX_Trading
       @commands << command if command
       show_help(parser) if @commands.empty?
       show_help(parser) if command.nil? && @options.empty? && has_required_option(hash[:options])
+      show_help(parser) if command.nil? && @options.empty? && hash[:show_options]
       parse_options(hash[:commands][command]) if command
     end
 
