@@ -1,13 +1,12 @@
 
 module IEX_Trading
-  class TableView
+  class TableView < View
 
     ###################
     def initialize(data=nil)
+      super(data)
       @data = data
-      return if @data.nil?
-      @data = @data.data
-      @c_widths = column_widths(@data)
+      @c_widths = column_widths(data)
     end
 
     private
@@ -16,7 +15,7 @@ module IEX_Trading
     # get the max length for each column
     def column_widths(data)
       max = []
-      data.each_with_index { |column, i|
+      (data || []).each_with_index { |column, i|
         max_in_column = 0
         column.each {|record|
           record = record.to_s
@@ -40,7 +39,7 @@ module IEX_Trading
     public
 
     ###################
-    def print
+    def show
       return if @data.nil?
       header = 1
       records_size = @data[0].size - header

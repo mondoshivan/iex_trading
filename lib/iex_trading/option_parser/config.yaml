@@ -1,10 +1,10 @@
 :parse:
   :banner: "Usage: ${ENTRY_POINT} COMMAND [OPTIONS]"
   :description: |
-    Available commands:
-    company    company information
-    portfolio  portfolio information
-    update     starts an update cycle
+    Commands:
+        company    company information
+        portfolio  portfolio information
+        update     starts an update cycle
   :options:
     - :short: -l LEVEL
       :long: --log_level LEVEL
@@ -12,7 +12,7 @@
       :key_name: log_level
   :commands:
     company:
-      :banner: "Usage: ${ENTRY_POINT} ${COMMANDS} [OPTIONS]"
+      :banner: "Usage: ${ENTRY_POINT} ${COMMANDS} [COMMAND] [OPTIONS]"
       :options:
         - :short: -s SYMBOL
           :long: --symbol SYMBOL
@@ -21,6 +21,9 @@
           :required: true
       :description: |
         get company information
+
+        Commands:
+            statistic    company statistic
       :commands:
           statistic:
             :banner: "Usage: ${ENTRY_POINT} ${COMMANDS} [OPTIONS]"
@@ -32,6 +35,16 @@
                 :required: true
             :description: |
               get company statistic
+          details:
+            :banner: "Usage: ${ENTRY_POINT} ${COMMANDS} [OPTIONS]"
+            :options:
+              - :short: -s SYMBOL
+                :long: --symbol SYMBOL
+                :description: company symbol
+                :key_name: symbol
+                :required: true
+            :description: |
+              get company details
     search:
       :banner: "Usage: ${ENTRY_POINT} ${COMMANDS} [OPTIONS]"
       :show_options: true
@@ -79,9 +92,9 @@
       :banner: "Usage: ${ENTRY_POINT} ${COMMANDS} [OPTIONS]"
       :show_options: true
       :description: |
-        Available sub commands:
-        list    list all available portfolios
-        new     creates a new portfolio
+        Commands:
+            list    list all available portfolios
+            new     creates a new portfolio
       :commands:
         list:
         new:
@@ -98,7 +111,7 @@
           :banner: "Usage: ${ENTRY_POINT} ${COMMANDS} [COMMAND] [OPTIONS]"
           :show_options: true
           :description: |
-            Available sub commands:
+            Commands:
             new    create a new portfolio item
           :commands:
             new:

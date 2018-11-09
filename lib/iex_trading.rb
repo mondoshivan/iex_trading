@@ -22,8 +22,10 @@ require 'iex_trading/model/financial'
 require 'iex_trading/model/symbol'
 require 'iex_trading/model/portfolio'
 require 'iex_trading/model/portfolio_item'
+require 'iex_trading/views/view'
 require 'iex_trading/views/table_view'
 require 'iex_trading/views/table_view_data'
+require 'iex_trading/views/details_view'
 
 module IEX_Trading
 
@@ -105,14 +107,20 @@ module IEX_Trading
         )
       }
 
-      t_view = TableView.new(t_data)
-      t_view.print
+      t_view = TableView.new(t_data.data)
+      t_view.show
     end
 
     ###################
     def statistic(symbol)
       hash = IEX_Trading::IEX_API.stock_stats(symbol)
       Log.print JSON.pretty_generate(hash)
+    end
+
+    ###################
+    def details(symbol)
+      @view = IEX_Trading::DetailsView.new
+      @view.show
     end
 
     ###################
@@ -127,8 +135,8 @@ module IEX_Trading
         )
       }
 
-      t_view = TableView.new(t_data)
-      t_view.print
+      t_view = TableView.new(t_data.data)
+      t_view.show
     end
 
     ###################
@@ -175,8 +183,8 @@ module IEX_Trading
         )
       }
 
-      t_view = TableView.new(t_data)
-      t_view.print
+      t_view = TableView.new(t_data.date)
+      t_view.show
     end
 
     public
@@ -184,6 +192,7 @@ module IEX_Trading
     ###################
     def shutdown_gracefully
       @data_collector.shutdown
+      @view.stop if @view
     end
 
     ###################
@@ -196,6 +205,8 @@ module IEX_Trading
                 company(@parser.options[:symbol])
               when 'statistic'
                 statistic(@parser.options[:symbol])
+              when 'details'
+                details(@parser.options[:symbol])
               else
                 raise 'illegal command'
             end
