@@ -3,6 +3,7 @@
   :description: |
     Available commands:
     company    company information
+    portfolio  portfolio information
     update     starts an update cycle
   :options:
     - :short: -l LEVEL
@@ -80,6 +81,7 @@
       :description: |
         Available sub commands:
         list    list all available portfolios
+        new     creates a new portfolio
       :commands:
         list:
         new:

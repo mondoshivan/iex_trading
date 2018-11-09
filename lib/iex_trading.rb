@@ -33,6 +33,7 @@ module IEX_Trading
 
     ###################
     def initialize
+      @shutdown = false
       @argv = ARGV.clone
       @parser = Parser.new(
           File.join(File.dirname(__FILE__), 'iex_trading', 'option_parser', 'config.yaml')
@@ -40,7 +41,10 @@ module IEX_Trading
       @parser.start
       logging
       database
+      @data_collector = DataCollector.new
     end
+
+    private
 
     ###################
     def logging
@@ -80,7 +84,7 @@ module IEX_Trading
         Log.print(pid)
         Log.print("\n")
       else
-        DataCollector.new.run
+        @data_collector.run
       end
     end
 
@@ -169,6 +173,13 @@ module IEX_Trading
       t_view.print
     end
 
+    public
+
+    ###################
+    def shutdown_gracefully
+      @data_collector.shutdown
+    end
+
     ###################
     def run
       symbol = @parser.options[:symbol]
@@ -215,4 +226,12 @@ module IEX_Trading
   end
 end
 
-IEX_Trading::Main.new.run
+iex = IEX_Trading::Main.new
+
+# catch the signal and
+# perform a controlled shutdown
+Signal.trap("INT") {
+  iex.shutdown_gracefully
+}
+
+iex.run

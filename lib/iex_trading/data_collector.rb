@@ -2,6 +2,11 @@
 module IEX_Trading
   class DataCollector
 
+    ###################
+    def initialize
+      @shutdown = false
+    end
+
     private
 
     ###################
@@ -58,8 +63,23 @@ module IEX_Trading
       s
     end
 
+    ###################
+    def continue?(s)
+      Log.debug(s)
+      if @shutdown
+        Log.debug('shutting down gracefully')
+        return false
+      end
+      true
+    end
+
 
     public
+
+    ###################
+    def shutdown
+      @shutdown = true
+    end
 
     ###################
     def run
@@ -71,6 +91,7 @@ module IEX_Trading
           s = statistics(s)
           s = financials(s)
           s.save
+          break unless continue?("#{i+1}. #{s.symbol}")
         rescue => e
           Log.error("#{e.class}: #{e.message}\n#{e.backtrace.join("\n")}")
         end

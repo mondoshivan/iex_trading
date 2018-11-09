@@ -54,6 +54,7 @@ module IEX_Trading
         opts.banner = placeholders(hash[:banner])
         opts.separator ''
         opts.separator placeholders(hash[:description])
+        opts.separator "\nOptions: " if hash[:options]
         (hash[:options] || []).each {|option|
           opts.on(option[:short], option[:long], option[:description]) { |v|
             value = option[:key_value] ? option[:key_value] : v

@@ -5,7 +5,7 @@ module IEX_Trading
     include DataMapper::Resource
 
     property :id, Serial
-    property :symbol, String#, key: true
+    property :symbol, String
     property :name, String
     property :date, Date
     property :isEnabled, Boolean
