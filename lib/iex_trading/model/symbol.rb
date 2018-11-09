@@ -13,6 +13,5 @@ module IEX_Trading
     property :iexId, Integer
 
     has 1, :company
-
   end
 end

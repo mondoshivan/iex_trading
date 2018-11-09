@@ -15,7 +15,11 @@ module IEX_Trading
       request = Net::HTTP::Get.new(uri.request_uri)
       response = http.request(request)
       body = response.body
-      JSON.parse(body)
+      begin
+        JSON.parse(body)
+      rescue JSON::ParserError => e
+        body
+      end
     end
   end
 end

@@ -5,8 +5,9 @@ module IEX_Trading
 
     property :id, Serial
     property :amount, Float
+    property :buyDateTime, DateTime, required: true
 
-    has 1, :symbol
+    belongs_to :symbol
     belongs_to :portfolio
   end
 end

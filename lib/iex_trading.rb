@@ -144,12 +144,13 @@ module IEX_Trading
       p = Portfolio.first(name: @parser.options[:portfolio])
       raise "portfolio does not exist: #{@parser.options[:portfolio]}" unless p
 
-      s = Symbol.first(name: @parser.options[:symbol])
+      s = Symbol.first(symbol: @parser.options[:symbol])
       raise "symbol does not exist: #{@parser.options[:symbol]}" unless s
 
       p.portfolioItems << PortfolioItem.new(
           symbol: s,
-          amount: @parser.options[:amount]
+          amount: @parser.options[:amount],
+          buyDateTime: Time.now
       )
       p.save
     end
@@ -160,12 +161,17 @@ module IEX_Trading
       raise "portfolio does not exist: #{@parser.options[:portfolio]}" unless p
 
       t_data = TableViewData.new
-      t_data.headers('Symbol', 'Name', 'Amount')
+      t_data.headers('Symbol', 'Name', 'Bought', 'Price', 'Amount', 'Value')
       p.portfolioItems.each { |result|
+        symbol = result.symbol.symbol
+        price = IEX_Trading::IEX_API.price(symbol)
         t_data.record(
-            result.symbol,
+            symbol,
             result.symbol.name,
-            result.amount
+            result.buyDateTime.strftime('%Y-%^b-%d|%T'),
+            price,
+            result.amount,
+            (result.amount * price).round(2)
         )
       }
 
@@ -182,16 +188,14 @@ module IEX_Trading
 
     ###################
     def run
-      symbol = @parser.options[:symbol]
-
       begin
         case @parser.commands[0]
           when 'company'
             case @parser.commands[1]
               when nil
-                company(symbol)
+                company(@parser.options[:symbol])
               when 'statistic'
-                statistic(symbol)
+                statistic(@parser.options[:symbol])
               else
                 raise 'illegal command'
             end

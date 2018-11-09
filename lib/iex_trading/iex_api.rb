@@ -17,10 +17,16 @@ module IEX_Trading
 
     ###################
     def self.stock_stats(symbol)
-      stats = HTTP.get("stock/#{symbol}/stats")
-      stats.delete('companyName')
-      stats.delete('symbol')
-      stats
+      rs = HTTP.get("stock/#{symbol}/stats")
+      rs.delete('companyName')
+      rs.delete('symbol')
+      rs
+    end
+
+    ###################
+    def self.price(symbol)
+      rs = HTTP.get("stock/#{symbol}/price")
+      rs.to_f
     end
 
     ###################

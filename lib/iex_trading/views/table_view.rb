@@ -19,6 +19,7 @@ module IEX_Trading
       data.each_with_index { |column, i|
         max_in_column = 0
         column.each {|record|
+          record = record.to_s
           max_in_column = record.size if record.size > max_in_column
         }
         max[i] = max_in_column
@@ -30,7 +31,7 @@ module IEX_Trading
     def create_row(columns, record_index)
       s = ''
       columns.times.each {|columns_index|
-        padding = ' ' * (@c_widths[columns_index] - @data[columns_index][record_index].size)
+        padding = ' ' * (@c_widths[columns_index] - @data[columns_index][record_index].to_s.size)
         s += "#{@data[columns_index][record_index]} " + padding
       }
       s
